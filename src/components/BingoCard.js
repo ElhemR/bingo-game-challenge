@@ -28,11 +28,9 @@ import DisplayIcon from './animatedIcons/DisplayIcon';
 import HeartIcon from './animatedIcons/HeartIcon';
 import BingoIcon from './animatedIcons/BingoIcon';
 
-// Css
-import './BingoCard.css';
-
 const BingoCard = ({ filledRows, filledColumns, bingo }) => {
   const [selectedSquares, setSelectedSquares] = useState([]);
+  const [foundSquares, setFoundSquares] = useState([]);
   const [isWinner, setIsWinner] = useState(false);
   const squaresData = [
     { id: 1, text: 'Hi, who just joined?', component: EyeIcon},
@@ -72,7 +70,7 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
     
         if (isWinner) {
             setShowBingo(true);
-        // Replace all icons with bingo confetti for two seconds
+        // Replace all icons with bingo confetti for two
           timeout = setTimeout(() => {
             setShowBingo(false);
             setIsWinner(false);
@@ -91,7 +89,7 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
         <div className="square-component">
           {showBingo ? <BingoIcon conditionMet={isWinner} /> : <Component conditionMet={isWinner} />}
         </div>
-        {!isWinner && <div className="square-text">{text}</div>}
+  <div style={{width: "8vw"}}> <p className="square-text">{text} </p></div>
       </div>
     );
   }
@@ -101,10 +99,14 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
     checkWinner();
   }, [selectedSquares]);
 
+  useEffect(() => {
+    console.log(foundSquares);
+  }, [foundSquares]);
 
 
   const handleSquareClick = (index) => {
     if (index !== 12) {
+      if (isWinner) setIsWinner(false);
       if (!selectedSquares.includes(index)) {
         setSelectedSquares([...selectedSquares, index]);
       } else {
@@ -122,16 +124,25 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
     for(const combo of winningCombos) {
         if(combo.every((columnIndex) => selectedSquares.includes(columnIndex))){
             setIsWinner(true);
+            setSelectedSquares([]);
+            setFoundSquares([...foundSquares, ...combo]);
             console.log(combo);
-            // reset 
+                   // reset 
         }
     }
   };
 
   return (
-    <div className="bingo-card-container">
-    <div className="bingo-card-grid">
-
+      <div
+        style={{
+          display: 'grid',
+          background: '#fff',
+          padding: '10px',
+          border:'1px solid',
+          gridTemplateColumns: 'repeat(5, 2fr)',
+          gap: '8px',
+        }}
+      >
         {/* Render the Bingo card squares */}
         {Array.from({ length: 25 }, (_, index) => (
           <motion.div
@@ -141,11 +152,12 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
               borderRadius: '4px',
               padding: '8px',
               textAlign: 'center',
+       
               // Add additional styles for filled rows and columns
               background: filledRows.includes(Math.floor(index / 5)) || filledColumns.includes(index % 5) ? 'lightgreen' : '#eee',
               cursor: index === 12 ? 'default' : 'pointer',
               // Add styling for selected squares
-              background: selectedSquares.includes(index) ? 'lightblue' : '#eee',
+              background: selectedSquares.includes(index) ? 'lightblue' : '#eee' ,
               color: selectedSquares.includes(index) ? 'white' : 'black',
             }}
             whileHover={{ scale: 1.05 }}
@@ -169,7 +181,6 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
           </motion.div>
         ))}
           {isWinner && <h2>Winner!</h2>}
-          </div>
       </div>
     
 

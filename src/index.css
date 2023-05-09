@@ -34,6 +34,8 @@ body::before{
 }
 .square-text {
   font-size: 0.8rem;
+  word-wrap: break-word; /* Allow the text to break into multiple lines */
+  white-space: normal;
 }
 .square-component {
   width: 50px;
