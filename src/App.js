@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import BingoCard from './components/BingoCard';
 
-function App() {
+const App = () => {
+  const filledRows = [0, 2, 4]; // Example filled rows
+  const filledColumns = [1, 3]; // Example filled columns
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Bingo Game</h1>
+      <BingoCard filledRows={filledRows} filledColumns={filledColumns} />
     </div>
   );
-}
+};
 
 export default App;
