@@ -1,3 +1,4 @@
+@import 'typeface-oswald';
 html, body{
   min-width: 100vw;
   min-height: 100vh;
@@ -5,9 +6,9 @@ html, body{
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: proxima-soft,sans-serif;
   position: relative;
   overflow: hidden;
+  font-family: 'Oswald';
 }
 body::before{
   content: "";
@@ -30,4 +31,125 @@ body::before{
   100%{
     background-position: -42.5rem -42.5rem;
   }
+}
+.square-text {
+  font-size: 0.8rem;
+}
+.square-component {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+.square {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.index {
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  font-size: 12px;
+  background-color: #fff;
+  color: black ;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.square-component {
+  display: flex;
+  margin-top: -5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.square-text {
+  margin-top: 10px;
+}
+
+.meme-image {
+  max-width: 100%;
+  height: 60%;
+}
+
+.meme-image {
+  max-width: 100%;
+  height: auto;
+}
+.bingo-container-start {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #6a0bff;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.input-field {
+  background-color: #f1f1f1;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.start-button {
+  background-color: #6a0bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.join-button {
+  background-color: #f06292;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background-color: #4f02a6;
+}
+
+.join-button:hover {
+  background-color: #e64a87;
+}
+
+.meme-container {
+  margin-top: 20px;
+  /* Add more styles for your meme container */
 }

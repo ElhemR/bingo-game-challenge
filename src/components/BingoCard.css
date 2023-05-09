@@ -1,0 +1,61 @@
+.bingo-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 10px;
+    width: 100vw;
+    box-sizing: border-box;
+  }
+  
+  .bingo-card-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    max-width: 100%;
+    background: #fff;
+    border: 1px solid;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .bingo-square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eee;
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+    color: black;
+  }
+  
+  @media (max-width: 600px) {
+    .bingo-card-container {
+      height: auto;
+      overflow: auto;
+    }
+  
+    .bingo-card-grid {
+      max-width: 100%;
+      margin: 0 auto;
+      height: auto;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      padding: 4px;
+    }
+  
+    .bingo-square {
+      padding: 6px;
+    }
+  }
+  
+  @media (min-aspect-ratio: 1/1) {
+    .bingo-square {
+      height: 0;
+      padding-bottom: calc(100% - 16px); /* Adjust the padding to achieve desired square size */
+    }
+  }
+  
