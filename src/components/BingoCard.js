@@ -30,7 +30,6 @@ import BingoIcon from './animatedIcons/BingoIcon';
 
 import './BingoCard.css';
 import io from "socket.io-client";
-import axios from 'axios';
 
 import playerNames from '../data/randomPlayerNames.json';
 
@@ -54,31 +53,21 @@ const BingoCard = ({ roomId, bingo }) => {
 
   useEffect(() => {
     debugger;
-    console.log("bing", bingo);
-    console.log("roomId", roomId);
+   
     localStorage.setItem("roomId",roomId);
-   console.log("players", bingo);
    const name = generateRandomName();
-   console.log('name', name);
 
-    console.log(localStorage.getItem("playerName"));
     if(!localStorage.getItem("playerName")) {
       socket.emit("joinRoom", roomId, name);
       localStorage.setItem("playerName",name);
     }
-    if(bingo && bingo.players){
-      console.log('score', bingo.players[localStorage.getItem('name')].score);
-    }
-
     return () => {
-     
     };
   }, []);
 
   useEffect(() => {
     // Listen for 'winningCombinations' event from the server
     socket.on('getRoomInfo', (combinations) => {
-      console.log(combinations); 
       // setWinningCombinations(combinations);
     });
 
@@ -163,14 +152,6 @@ const BingoCard = ({ roomId, bingo }) => {
 
 
   }, [selectedSquares]);
-
-
-
-
-  useEffect(() => {
-    console.log('sgkljkwjgwpoejejk');
-
-  }, []);
 
   const handleSquareClick = (index) => {
     if (index !== 12) {

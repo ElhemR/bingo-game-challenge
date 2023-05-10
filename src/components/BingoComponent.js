@@ -11,15 +11,12 @@ const BingoComponent = () => {
     const [roomInfo, setRoomInfo] = useState(null);
 
     let { roomId } = useParams();
-    console.log("or",roomId);
-  // Listen for 'roomInfo' event
+    // Listen for 'roomInfo' event
 
     useEffect(() => {
       socket.emit("getRoomInfo", roomId);
     }, [roomId]);
-    useEffect(() => {
-      console.log("kegklg", roomInfo);
-    }, [roomId]);
+
   // State variables
   socket.on("roomInfo", (info) => {
     setRoomInfo(info);
@@ -51,7 +48,6 @@ const BingoComponent = () => {
 
     // Handle the data response from the server
     socket.on('dataResponse', (responseData) => {
-      console.log('Received data from server:', responseData);
       setData(responseData);
       // Perform any necessary operations with the received data
     });

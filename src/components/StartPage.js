@@ -30,7 +30,6 @@ const StartPage = () => {
   const [roomInfo, setRoomInfo] = useState(null);
 
   const handleJoinRoom = () => {
-    console.log('setplayernmae');
     socket.emit("getRoomInfo", roomId);
     socket.emit("joinRoom", roomId, playerName);
     localStorage.setItem("playerName", playerName);
@@ -42,7 +41,6 @@ const StartPage = () => {
   // Event handler for creating a room
   const handleCreateRoom = () => {
     const newRoomId = generateRoomId();
-    console.log(newRoomId);
     socket.emit("createRoom", newRoomId);
     localStorage.setItem("roomId", newRoomId);
     setRoomId(newRoomId);
@@ -66,21 +64,16 @@ const StartPage = () => {
   // Socket.io event listeners
 
   useEffect(() => {
-    console.log(roomId);
-
     socket.on("response-data", (responseData) => {
       // Handle the received data
-      console.log(responseData);
     });
 
     socket.emit("request-room-data", roomId);
     socket.on("roomCreated", (roomId) => {
-      console.log(`Room created with ID: ${roomId}`);
       // Handle room creation success
     });
 
     socket.on("joinError", (error) => {
-      console.log(`Error joining room: ${error}`);
       // Handle join error
     });
 
@@ -104,7 +97,6 @@ const StartPage = () => {
     socket.emit("getRoomInfo", roomId);
   }, [roomInfo]);
   useEffect(() => {
-    console.log("kegklg", roomInfo);
   }, [roomInfo]);
   return (
     <div>
