@@ -33,9 +33,7 @@
     display: none;
   }
   
-  .tooltip-container:hover .tooltip {
-    display: block;
-  }
+
   
   .user-span {
     display: flex;

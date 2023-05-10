@@ -57,14 +57,24 @@
     /* Adjust the grid for smaller screens */
     .squaregrid {
         background-color: #fff;
-        max-width: 450px;
+        max-width: 500px;
         display: grid;
         grid-template: repeat(5, 15vw) / repeat(5, 15vw);
         overflow-y: auto;
     }
     .cell {
-        font-size: 0.4em;
+        font-size: 0.3em;
     }
+    .content-text{
+      line-height: 1.2em;
+    }
+    .grid-container-square {
+
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Two columns with equal width */
+      grid-gap: 5px; /* Adjust the gap between columns as needed */
+   
+  }
   }
 
   .grid-container-square {

@@ -29,7 +29,7 @@ const Toolbar = () => {
       </div>
       <div className="column">
         <div  className="tooltip-container">
-          <span>Column 2</span>
+          <span>BINGO!</span>
           <div className="tooltip">
           </div>
         </div>
