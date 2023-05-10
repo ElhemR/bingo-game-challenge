@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 // Icons 
 import EyeIcon from './animatedIcons/EyeIcon';
@@ -28,10 +27,14 @@ import DisplayIcon from './animatedIcons/DisplayIcon';
 import HeartIcon from './animatedIcons/HeartIcon';
 import BingoIcon from './animatedIcons/BingoIcon';
 
-const BingoCard = ({ filledRows, filledColumns, bingo }) => {
+
+import './BingoCard.css';
+
+const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
   const [selectedSquares, setSelectedSquares] = useState([]);
   const [foundSquares, setFoundSquares] = useState([]);
   const [isWinner, setIsWinner] = useState(false);
+
   const squaresData = [
     { id: 1, text: 'Hi, who just joined?', component: EyeIcon},
     { id: 2, text: 'Can you email that to everyone?', component: EmailIcon },
@@ -63,7 +66,7 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
 
 
   function Square({ index, text, component: Component }) {
-    console.log(index)
+
     const [showBingo, setShowBingo] = useState(false);
     useEffect(() => {
         let timeout;
@@ -84,13 +87,10 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
       }, []);
 
     return (
-        <div className="square">
-        { index !=13 &&<div className="index">{index - 1 }</div>}
-        <div className="square-component">
-          {showBingo ? <BingoIcon conditionMet={isWinner} /> : <Component conditionMet={isWinner} />}
-        </div>
-  <div style={{width: "8vw"}}> <p className="square-text">{text} </p></div>
-      </div>
+<div className="grid-container-square">
+  <div className="grid-item top-left">{showBingo ? <BingoIcon conditionMet={isWinner} /> : <Component conditionMet={isWinner} />}</div>
+  <div className="grid-item top-right"> { index -1}</div>
+</div>
     );
   }
   
@@ -100,7 +100,7 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
   }, [selectedSquares]);
 
   useEffect(() => {
-    console.log(foundSquares);
+
   }, [foundSquares]);
 
 
@@ -121,69 +121,53 @@ const BingoCard = ({ filledRows, filledColumns, bingo }) => {
         [0, 1, 2, 3, 4],
         [0,6,18,24],
       ];
-    for(const combo of winningCombos) {
-        if(combo.every((columnIndex) => selectedSquares.includes(columnIndex))){
-            setIsWinner(true);
-            setSelectedSquares([]);
-            setFoundSquares([...foundSquares, ...combo]);
-            console.log(combo);
-                   // reset 
-        }
-    }
+      console.log('Z',winningCombos);
+      console.log('w',bingoData)
+   
+        for(const combo of winningCombos) {
+          if(combo.every((columnIndex) => selectedSquares.includes(columnIndex))){
+              setIsWinner(true);
+              setSelectedSquares([]);
+              setFoundSquares([...foundSquares, ...combo]);
+                     // reset 
+          }
+      }
+
+ 
   };
 
   return (
-      <div
-        style={{
-          display: 'grid',
-          background: '#fff',
-          padding: '10px',
-          border:'1px solid',
-          gridTemplateColumns: 'repeat(5, 2fr)',
-          gap: '8px',
-        }}
-      >
-        {/* Render the Bingo card squares */}
-        {Array.from({ length: 25 }, (_, index) => (
-          <motion.div
-            key={index}
-            style={{
-              background: '#eee',
-              borderRadius: '4px',
-              padding: '8px',
-              textAlign: 'center',
-       
-              // Add additional styles for filled rows and columns
-              background: filledRows.includes(Math.floor(index / 5)) || filledColumns.includes(index % 5) ? 'lightgreen' : '#eee',
-              cursor: index === 12 ? 'default' : 'pointer',
-              // Add styling for selected squares
-              background: selectedSquares.includes(index) ? 'lightblue' : '#eee' ,
-              color: selectedSquares.includes(index) ? 'white' : 'black',
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleSquareClick(index)}
+    <>
+    <div class="squaregrid" >
+    {Array.from({ length: 25 }, (_, index) => (
+          <div class="cell scale-on-hover" 
+          style={{
+            background: '#eee',
+            borderRadius: '8px',
+            padding: '8px',
+            textAlign: 'center',
+            background: foundSquares.includes(index) ? 'lightblue' : '#eee',
+            cursor: index === 12 ? 'default' : 'pointer',
+            background: selectedSquares.includes(index) ? 'lightblue' : '#eee',
+            color: selectedSquares.includes(index) ? 'white' : 'black',
+
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            wordYrap: 'break-word',
+            whiteSpace: 'normal'
+          }}
+          onClick={() => handleSquareClick(index)}
           >
-      <div className="grid">
-
-        {/* <Square key={id} text={text} component={component} /> */}
-        <Square key={squaresData[index].id} text={squaresData[index].text} component={squaresData[index].component} index={squaresData[index].id} /> 
-  
-    </div>
-            {/* Render the content of each Bingo card square */}
-            {/* Use your own sentences here */}
-            {/* {data[index]} {index }  */}
-            {/* <div style={{width: "50px",height: "50px"}}>
-            {squaresData[index].component}
-      </div> */}
-
-
-          </motion.div>
+            <Square key={squaresData[index].id} text={squaresData[index].text} component={squaresData[index].component} index={squaresData[index].id} /> 
+          <p className="content-text">{squaresData[index].text}</p>
+          </div>
         ))}
-          {isWinner && <h2>Winner!</h2>}
-      </div>
+  
+</div>
+      
     
-
+      </>
   );
 };
 

@@ -7,7 +7,8 @@ html, body{
   align-items: center;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  font-display: fallback;
+
   font-family: 'Oswald';
 }
 body::before{
@@ -38,8 +39,8 @@ body::before{
   white-space: normal;
 }
 .square-component {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   text-align: center;
 }
 .square {
@@ -66,6 +67,9 @@ body::before{
   margin-top: -5px;
   align-items: center;
   justify-content: center;
+}
+.square-component img {
+  text-align: center;
 }
 
 .square-text {
@@ -101,7 +105,11 @@ body::before{
   margin-bottom: 16px;
   color: #6a0bff;
 }
-
+.game-subtitle {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #000;
+}
 .input-container {
   display: flex;
   flex-direction: column;
@@ -118,7 +126,7 @@ body::before{
 }
 
 .button-container {
-  display: flex;
+  display: block;
   justify-content: center;
   margin-top: 16px;
 }
@@ -138,6 +146,7 @@ body::before{
   color: #fff;
   border: none;
   padding: 10px 20px;
+  margin-left: 10px;
   margin-right: 10px;
   border-radius: 4px;
   cursor: pointer;

@@ -1,0 +1,53 @@
+.grid-container {
+    display: flex;
+    background-color: white;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #6A0BFF;
+    border-radius: 8px;
+  }
+  
+  .column {
+    background-color: white;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .tooltip-container {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .tooltip {
+    background-color: white;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: none;
+  }
+  
+  .tooltip-container:hover .tooltip {
+    display: block;
+  }
+  
+  .user-span {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-icon {
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .user-name {
+    font-weight: bold;
+  }
