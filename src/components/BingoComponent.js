@@ -14,7 +14,7 @@ const BingoComponent = () => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get('https://symphonious-bubblegum-af5f21.netlify.app/api/data?roomId='+roomId);
+            const response = await axios.get('http://localhost:4000/api/data?roomId='+roomId);
             setData(response.data);
           } catch (error) {
             console.error('Error fetching data:', error);

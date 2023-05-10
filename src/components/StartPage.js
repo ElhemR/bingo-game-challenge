@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const socket = io("https://symphonious-bubblegum-af5f21.netlify.app", { transports: ["websocket"] });
+const socket = io("http://localhost:4000", { transports: ["websocket"] });
 
 const StartPage = () => {
   // State variables
