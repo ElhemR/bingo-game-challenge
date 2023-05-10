@@ -29,11 +29,70 @@ import BingoIcon from './animatedIcons/BingoIcon';
 
 
 import './BingoCard.css';
+import io from "socket.io-client";
+import axios from 'axios';
 
-const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
+import playerNames from '../data/randomPlayerNames.json';
+
+
+const socket = io("https://puzzled-sparkly-sycamore.glitch.me:4000", { transports: ["websocket"] });
+
+
+const generateRandomName = () => {
+  const randomIndex = Math.floor(Math.random() * playerNames.length);
+  return playerNames[randomIndex];
+};
+
+
+const BingoCard = ({ roomId, bingo }) => {
   const [selectedSquares, setSelectedSquares] = useState([]);
   const [foundSquares, setFoundSquares] = useState([]);
   const [isWinner, setIsWinner] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const [winningCombinations, setWinningCombinations] = useState([]);
+
+  useEffect(() => {
+    debugger;
+    console.log("bing", bingo);
+    console.log("roomId", roomId);
+    localStorage.setItem("roomId",roomId);
+   console.log("players", bingo);
+   const name = generateRandomName();
+   console.log('name', name);
+
+    console.log(localStorage.getItem("playerName"));
+    if(!localStorage.getItem("playerName")) {
+      socket.emit("joinRoom", roomId, name);
+      localStorage.setItem("playerName",name);
+    }
+    if(bingo && bingo.players){
+      console.log('score', bingo.players[localStorage.getItem('name')].score);
+    }
+
+    return () => {
+     
+    };
+  }, []);
+
+  useEffect(() => {
+    // Listen for 'winningCombinations' event from the server
+    socket.on('getRoomInfo', (combinations) => {
+      console.log(combinations); 
+      // setWinningCombinations(combinations);
+    });
+
+    // Clean up event listeners
+    return () => {
+      socket.off('winningCombinations');
+      // socket.disconnect();
+    };
+  }, [roomId]);
+
+
+
+    // Connect to the server
+ 
 
   const squaresData = [
     { id: 1, text: 'Hi, who just joined?', component: EyeIcon},
@@ -69,6 +128,7 @@ const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
 
     const [showBingo, setShowBingo] = useState(false);
     useEffect(() => {
+ 
         let timeout;
     
         if (isWinner) {
@@ -85,9 +145,7 @@ const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
           clearTimeout(timeout);
         };
       }, []);
-      useEffect(() => {
-     console.log('foundsquares', foundSquares);
-      }, [foundSquares]);
+
 
 
 
@@ -102,12 +160,17 @@ const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
 
   useEffect(() => {
     checkWinner();
+
+
   }, [selectedSquares]);
 
+
+
+
   useEffect(() => {
+    console.log('sgkljkwjgwpoejejk');
 
-  }, [foundSquares]);
-
+  }, []);
 
   const handleSquareClick = (index) => {
     if (index !== 12) {
@@ -120,24 +183,22 @@ const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
     }
   };
 
+
+socket.on('connect', () => {
+  console.log('Connected to the server');
+});
+
   const checkWinner = () => {
-    const winningCombos = [
-        [0, 5, 10, 15, 20],
-        [0, 1, 2, 3, 4],
-        [0,6,18,24],
-      ];
-      console.log('Z',winningCombos);
-      console.log('w',bingoData)
-   
-        for(const combo of winningCombos) {
+      if(bingo.bingo) {
+        for(const combo of bingo.bingo) {
           if(combo.every((columnIndex) => selectedSquares.includes(columnIndex))){
               setIsWinner(true);
               setSelectedSquares([]);
               setFoundSquares([...foundSquares, ...combo]);
                      // reset 
           }
+       }
       }
-
  
   };
 

@@ -3,14 +3,13 @@ import io from "socket.io-client";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-
-
-const socket = io("http://localhost:4000", { transports: ["websocket"] });
+const socket = io("https://puzzled-sparkly-sycamore.glitch.me:4000", { transports: ["websocket"] });
 
 const StartPage = () => {
   // State variables
   const [roomId, setRoomId] = useState("");
-  const [playerName, setPlayerName] = useState("");
+  const [score, setScore] = useState(0);
+  const [playerName, setPlayerName] = useState("Mr Scrum Master");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
@@ -31,8 +30,11 @@ const StartPage = () => {
   const [roomInfo, setRoomInfo] = useState(null);
 
   const handleJoinRoom = () => {
+    console.log('setplayernmae');
     socket.emit("getRoomInfo", roomId);
     socket.emit("joinRoom", roomId, playerName);
+    localStorage.setItem("playerName", playerName);
+  
 
     navigate(`/bingo/${roomId}`);
   };
@@ -128,6 +130,7 @@ const StartPage = () => {
           <div className="button-container">
             <input
               type="text"
+              
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
               placeholder="Your Name"

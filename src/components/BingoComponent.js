@@ -2,31 +2,28 @@ import React, { useEffect, useState } from 'react';
 import BingoCard from "./BingoCard";
 import Toolbar from "./shared/toolbar/Toolbar";
 import { useParams } from "react-router-dom";
-import axios from 'axios';
 
-
+import io from "socket.io-client";
+const socket = io("https://puzzled-sparkly-sycamore.glitch.me:4000", { transports: ["websocket"] });
 const BingoComponent = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
       
+    const [roomInfo, setRoomInfo] = useState(null);
 
     let { roomId } = useParams();
     console.log("or",roomId);
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axios.get('http://localhost:4000/api/data?roomId='+roomId);
-            setData(response.data);
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-        };
-    
-        fetchData();
-      }, []);
-    
-    
-  // State variables
+  // Listen for 'roomInfo' event
 
+    useEffect(() => {
+      socket.emit("getRoomInfo", roomId);
+    }, [roomId]);
+    useEffect(() => {
+      console.log("kegklg", roomInfo);
+    }, [roomId]);
+  // State variables
+  socket.on("roomInfo", (info) => {
+    setRoomInfo(info);
+  });
   const [playerName, setPlayerName] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   // Event handlers
@@ -43,11 +40,33 @@ const BingoComponent = () => {
 
 
 
+  useEffect(() => {
+    // Connect to the server
+    socket.connect();
+
+    const requestId = roomId; // Replace with the desired ID
+
+    // Request data from the server with the ID attribute
+    socket.emit('requestData', requestId);
+
+    // Handle the data response from the server
+    socket.on('dataResponse', (responseData) => {
+      console.log('Received data from server:', responseData);
+      setData(responseData);
+      // Perform any necessary operations with the received data
+    });
+
+    // Clean up the socket connection when the component unmounts
+    return () => {
+      // socket.disconnect();
+    };
+  }, []);
+
   return (
     <div>
-
+   
        <Toolbar></Toolbar>
-        <BingoCard bingoData = {data}/>
+        <BingoCard roomId = {roomId} bingo = {data}/>
 
         <div>
 
