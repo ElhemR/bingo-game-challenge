@@ -85,6 +85,11 @@ const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
           clearTimeout(timeout);
         };
       }, []);
+      useEffect(() => {
+     console.log('foundsquares', foundSquares);
+      }, [foundSquares]);
+
+
 
     return (
 <div className="grid-container-square">
@@ -146,7 +151,7 @@ const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
             borderRadius: '8px',
             padding: '8px',
             textAlign: 'center',
-            background: foundSquares.includes(index) ? 'lightblue' : '#eee',
+            background: foundSquares.includes(index) ? '#90EE90' : '#eee',
             cursor: index === 12 ? 'default' : 'pointer',
             background: selectedSquares.includes(index) ? 'lightblue' : '#eee',
             color: selectedSquares.includes(index) ? 'white' : 'black',
@@ -160,7 +165,7 @@ const BingoCard = ({ filledRows, filledColumns, bingoData }) => {
           onClick={() => handleSquareClick(index)}
           >
             <Square key={squaresData[index].id} text={squaresData[index].text} component={squaresData[index].component} index={squaresData[index].id} /> 
-          <p className="content-text">{squaresData[index].text}</p>
+          <p className="content-text" style={{ textDecoration: foundSquares.includes(index)  ? 'line-through' : 'none' }} > {squaresData[index].text}</p>
           </div>
         ))}
   
