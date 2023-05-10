@@ -1,72 +1,72 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { motion } from "framer-motion";
-import BingoCard from "./BingoCard";
 import { useNavigate } from "react-router-dom";
-import Toolbar from "./shared/toolbar/Toolbar";
-import MyComponent from "./roomComponent";
 
-const socket = io("http://localhost:4000", { transports: ["websocket"] }); 
+
+
+const socket = io("https://symphonious-bubblegum-af5f21.netlify.app", { transports: ["websocket"] });
 
 const StartPage = () => {
   // State variables
   const [roomId, setRoomId] = useState("");
   const [playerName, setPlayerName] = useState("");
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-    // Function to generate a random room ID
-    const generateRoomId = () => {
-        const roomIdLength = 6;
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let roomId = '';
-        for (let i = 0; i < roomIdLength; i++) {
-          roomId += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return roomId;
-      };
-    
+  // Function to generate a random room ID
+  const generateRoomId = () => {
+    const roomIdLength = 6;
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let roomId = "";
+    for (let i = 0; i < roomIdLength; i++) {
+      roomId += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return roomId;
+  };
 
-      const [roomInfo, setRoomInfo] = useState(null);
-    
-      const handleJoinRoom = () => {
+  const [roomInfo, setRoomInfo] = useState(null);
 
-        socket.emit('getRoomInfo', roomId);
-        socket.emit('joinRoom', roomId, playerName);
-      
-        navigate(`/bingo/${roomId}`);
-      };
-    
-      // Event handler for creating a room
-      const handleCreateRoom = () => {
-        const newRoomId = generateRoomId();
-        console.log(newRoomId);
-        socket.emit('createRoom', newRoomId);
-        localStorage.setItem("roomId",newRoomId);
-        setRoomId(newRoomId);
-      };
-    
-      // Event handler for getting room information
-      const handleGetRoomInfo = () => {
-        socket.emit('getRoomInfo', roomId);
-      };
-    
-      // Listen for 'roomCreated' event
-      socket.on('roomCreated', (createdRoomId) => {
-        setRoomId(createdRoomId);
-      });
-    
-      // Listen for 'roomInfo' event
-      socket.on('roomInfo', (info) => {
-        setRoomInfo(info);
-      });
+  const handleJoinRoom = () => {
+    socket.emit("getRoomInfo", roomId);
+    socket.emit("joinRoom", roomId, playerName);
+
+    navigate(`/bingo/${roomId}`);
+  };
+
+  // Event handler for creating a room
+  const handleCreateRoom = () => {
+    const newRoomId = generateRoomId();
+    console.log(newRoomId);
+    socket.emit("createRoom", newRoomId);
+    localStorage.setItem("roomId", newRoomId);
+    setRoomId(newRoomId);
+  };
+
+  // Event handler for getting room information
+  const handleGetRoomInfo = () => {
+    socket.emit("getRoomInfo", roomId);
+  };
+
+  // Listen for 'roomCreated' event
+  socket.on("roomCreated", (createdRoomId) => {
+    setRoomId(createdRoomId);
+  });
+
+  // Listen for 'roomInfo' event
+  socket.on("roomInfo", (info) => {
+    setRoomInfo(info);
+  });
 
   // Socket.io event listeners
 
   useEffect(() => {
-    console.log(roomId);  
+    console.log(roomId);
 
-    socket.on('response-data', (responseData) => {
+    socket.on("response-data", (responseData) => {
       // Handle the received data
       console.log(responseData);
     });
@@ -95,12 +95,15 @@ const StartPage = () => {
       console.log(`Joined room ${roomId} as ${playerName}`);
       // Handle joined room success
     });
-    socket.emit('request-room-data', localStorage.getItem("roomId"));
-
+    socket.emit("request-room-data", localStorage.getItem("roomId"));
   }, []);
 
-  useEffect(() => {      socket.emit('getRoomInfo', roomId);  }, [roomInfo]);
-  useEffect(() => {  console.log("kegklg",roomInfo) }, [roomInfo]);
+  useEffect(() => {
+    socket.emit("getRoomInfo", roomId);
+  }, [roomInfo]);
+  useEffect(() => {
+    console.log("kegklg", roomInfo);
+  }, [roomInfo]);
   return (
     <div>
       <motion.div
@@ -111,53 +114,37 @@ const StartPage = () => {
         className="bingo-container-start"
       >
         <h1 className="game-title">BINGO!</h1>
-        <h1 className="game-subtitle">1. Create your room and share the URL with your friends </h1> 
-            <button className="start-button" onClick={handleCreateRoom}> Create Room</button>
-            {roomId && <p>Room ID: {roomId}</p>}
+        <h1 className="game-subtitle">
+          1. Create your room and share the URL with your friends{" "}
+        </h1>
+        <button className="start-button" onClick={handleCreateRoom}>
+          {" "}
+          Create Room
+        </button>
+        {roomId && <p>Room ID: {roomId}</p>}
         <div className="input-container">
-        <h1 className="game-subtitle">2. Start Playing! </h1> 
+          <h1 className="game-subtitle">2. Start Playing! </h1>
 
-        <div className="button-container">
-        <input
-            type="text"
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
-            placeholder="Your Name"
-            className="input-field"
-          />
-  
-                  <button className="join-button" onClick={handleJoinRoom}> Join Room</button>
-</div>
+          <div className="button-container">
+            <input
+              type="text"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              placeholder="Your Name"
+              className="input-field"
+            />
 
-
+            <button className="join-button" onClick={handleJoinRoom}>
+              {" "}
+              Join Room
+            </button>
+          </div>
         </div>
-        <div>
-  
 
-      {/* Additional components and logic */}
-    </div>
-    <div>
-
-
-      <button onClick={handleGetRoomInfo}>Get Room Info</button>
-
-        <div>
-          <p>Room Information:</p>
-          <pre>{JSON.stringify(roomInfo, null, 2)}</pre>
-        </div>
- 
-
-      {/* Additional components and logic */}
-    </div>
-   
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-       <MyComponent/>
-
       </motion.div>
-
     </div>
   );
 };
 
 export default StartPage;
-

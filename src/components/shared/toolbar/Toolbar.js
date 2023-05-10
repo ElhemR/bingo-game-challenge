@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './Toolbar.css';
-// import UserIcon from '../../../assets/icons/user.svg'
+import UserIcon from '../../../assets/icons/User.svg'
 
 const Toolbar = () => {
     const playerName = localStorage.getItem('playerName');
@@ -11,7 +11,7 @@ const Toolbar = () => {
       <div className="column">
         <div className="tooltip-container">
         <span className="user-span">
-        {/* <img src={UserIcon} alt="User Icon" className="user-icon" /> */}
+        <img src={UserIcon} alt="User Icon" className="user-icon" />
       <span className="user-name"> {playerName}</span>
     </span>
           <div className="tooltip">

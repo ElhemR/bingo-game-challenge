@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:4000');  // Replace with your server URL
+const socket = io('https://symphonious-bubblegum-af5f21.netlify.app');  // Replace with your server URL
 
 const MyComponent = () => {
   const [roomInfo, setRoomInfo] = useState(null);
@@ -17,7 +17,7 @@ const MyComponent = () => {
     return () => {
       socket.off('roomInfo');
     };
-    console.log('wr',roomInfo);
+   
   }, []);
 
   // Render your component using the roomInfo

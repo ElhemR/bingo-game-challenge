@@ -57,10 +57,10 @@
     /* Adjust the grid for smaller screens */
     .squaregrid {
         background-color: #fff;
-        max-width: 650px;
+        max-width: 450px;
         display: grid;
-        grid-template: repeat(5, 10vw) / repeat(5, 10vw);
-        grid-gap: 5px;
+        grid-template: repeat(5, 15vw) / repeat(5, 15vw);
+        overflow-y: auto;
     }
     .cell {
         font-size: 0.4em;
