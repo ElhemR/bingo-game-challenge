@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // Icons
 import EyeIcon from "./animatedIcons/EyeIcon";
@@ -32,6 +32,8 @@ import io from "socket.io-client";
 
 import playerNames from "../data/randomPlayerNames.json";
 
+// Context
+import { BingoContext } from "../contexts/BingoContext";
 const url =
   process.env.REACT_APP_BINGO_SERVER_URL + ":" + process.env.REACT_APP_PORT;
 console.log(url);
@@ -50,7 +52,7 @@ const BingoCard = ({ roomId, bingo }) => {
   const [score, setScore] = useState(0);
 
   const [winningCombinations, setWinningCombinations] = useState([]);
-
+  const { bingoArray, updateBingoArray, updateScore } = useContext(BingoContext);
   useEffect(() => {
     localStorage.setItem("roomId", roomId);
     const name = generateRandomName();
@@ -68,6 +70,12 @@ const BingoCard = ({ roomId, bingo }) => {
     const score = foundSquares.length;
     const data = { playerName, score, roomId };
     socket.emit("scoreUpdate", data);
+    const updatedArray = [...bingoArray]; // Make a copy of the array
+    // Modify the array as needed
+    // Example: Update the value at index [0][0] to 'X'
+
+    updateBingoArray(foundSquares);
+    updateScore(score);
     return () => {
       socket.off("scoreUpdate");
     };
@@ -152,7 +160,7 @@ const BingoCard = ({ roomId, bingo }) => {
         timeout = setTimeout(() => {
           setShowBingo(false);
           setIsWinner(false);
-        }, 2000);
+        }, 1600);
       }
 
       return () => {
