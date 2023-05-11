@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import BingoAnimation from "./animatedIcons/BingoAnimation";
 
-const socket = io("https://puzzled-sparkly-sycamore.glitch.me:4000", { transports: ["websocket"] });
+const url = process.env.REACT_APP_BINGO_SERVER_URL +":"+ process.env.REACT_APP_PORT;
+console.log('urlÄ',url)
+console.log(process.env)
+const socket = io(url, { transports: ["websocket"] });
+
 
 const StartPage = () => {
   // State variables
@@ -12,6 +17,9 @@ const StartPage = () => {
   const [playerName, setPlayerName] = useState("Mr Scrum Master");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  // animations
+  const [isHighlighted, setIsHighlighted] = useState(false);
 
   // Function to generate a random room ID
   const generateRoomId = () => {
@@ -30,12 +38,20 @@ const StartPage = () => {
   const [roomInfo, setRoomInfo] = useState(null);
 
   const handleJoinRoom = () => {
-    socket.emit("getRoomInfo", roomId);
-    socket.emit("joinRoom", roomId, playerName);
-    localStorage.setItem("playerName", playerName);
-  
 
-    navigate(`/bingo/${roomId}`);
+    if(roomId) {
+      socket.emit("getRoomInfo", roomId);
+      socket.emit("joinRoom", roomId, playerName);
+      localStorage.setItem("playerName", playerName);
+    
+  
+      navigate(`/bingo/${roomId}`);
+    }
+  
+    else {
+      console.log('en')
+      setErrorMessage("You should create a room first!")
+    }
   };
 
   // Event handler for creating a room
@@ -107,8 +123,11 @@ const StartPage = () => {
         transition={{ duration: 0.5 }}
         className="bingo-container-start"
       >
-        <h1 className="game-title">BINGO!</h1>
-        <h1 className="game-subtitle">
+        <BingoAnimation></BingoAnimation>
+
+        <h1  
+
+            className="game-subtitle">
           1. Create your room and share the URL with your friends{" "}
         </h1>
         <button className="start-button" onClick={handleCreateRoom}>
@@ -129,7 +148,7 @@ const StartPage = () => {
               className="input-field"
             />
 
-            <button className="join-button" onClick={handleJoinRoom}>
+            <button className="join-button" onClick={handleJoinRoom} disabled={!roomId} >
               {" "}
               Join Room
             </button>

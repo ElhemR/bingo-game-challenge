@@ -4,11 +4,13 @@ import Toolbar from "./shared/toolbar/Toolbar";
 import { useParams } from "react-router-dom";
 
 import io from "socket.io-client";
-const socket = io("https://puzzled-sparkly-sycamore.glitch.me:4000", { transports: ["websocket"] });
+
+const url = process.env.REACT_APP_BINGO_SERVER_URL +":"+ process.env.REACT_APP_PORT;
+
+const socket = io(url, { transports: ["websocket"] });
 const BingoComponent = () => {
     const [data, setData] = useState({});
       
-    const [roomInfo, setRoomInfo] = useState(null);
 
     let { roomId } = useParams();
     // Listen for 'roomInfo' event
@@ -17,10 +19,7 @@ const BingoComponent = () => {
       socket.emit("getRoomInfo", roomId);
     }, [roomId]);
 
-  // State variables
-  socket.on("roomInfo", (info) => {
-    setRoomInfo(info);
-  });
+
   const [playerName, setPlayerName] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   // Event handlers
@@ -35,6 +34,20 @@ const BingoComponent = () => {
   };
 
 
+
+     // Listen for 'dataBroadcast' event
+     useEffect(() => {
+      socket.on('scoreUpdate', (data) => {
+        const { playerName, score, roomId } = data;
+        console.log('Received updated score:', score);
+        // Update the player's score in the React component state or perform any necessary operations
+      });
+      
+      // Clean up the event listener when the component unmounts
+      return () => {
+        socket.off("scoreUpdate");
+      };
+    }, []);
 
 
   useEffect(() => {
@@ -52,6 +65,7 @@ const BingoComponent = () => {
       // Perform any necessary operations with the received data
     });
 
+    
     // Clean up the socket connection when the component unmounts
     return () => {
       // socket.disconnect();
@@ -62,6 +76,7 @@ const BingoComponent = () => {
     <div>
    
        <Toolbar></Toolbar>
+      
         <BingoCard roomId = {roomId} bingo = {data}/>
 
         <div>

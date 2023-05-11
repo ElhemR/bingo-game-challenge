@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 import './Toolbar.css';
 import UserIcon from '../../../assets/icons/User.svg'
 

@@ -38,11 +38,11 @@
   }
   
   .squaregrid {
-    max-width: 600px;
+    max-width: 630px;
     border: '1px solid';
     display: grid;
     margin-left: 5px;
-    grid-template: repeat(5, 8vw) / repeat(5, 8vw);
+    grid-template: repeat(5, 10vw) / repeat(5, 10vw);
     grid-gap: 10px;
 }
 .cell {

@@ -103,7 +103,7 @@ body::before{
 }
 
 .game-title {
-  font-size: 24px;
+  font-size: 2.2em;
   margin-bottom: 16px;
   color: #6a0bff;
 }
@@ -152,6 +152,11 @@ body::before{
   margin-right: 10px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.join-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .start-button:hover {
