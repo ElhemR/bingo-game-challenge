@@ -9,8 +9,7 @@ const Toolbar = () => {
 
     const playerName = useSelector((state) => state.playerName);
     const score = useSelector((state) => state.score);
-
-    const roomId = localStorage.getItem('roomId');
+    const roomId = useSelector((state) => state.roomId);
    
     const controls = useAnimation();
     useEffect(() => {

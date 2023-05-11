@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 // Define the initial state
 const initialState = {
   playerName: '',
+  roomId: '',
   score: 0,
 };
 
@@ -21,6 +22,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         score: state.score + action.payload,
       };
+    case 'SET_ROOM_ID':
+        return {
+          ...state,
+          roomId: action.payload,
+        };
+
     default:
       return state;
   }

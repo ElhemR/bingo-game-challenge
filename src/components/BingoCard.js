@@ -91,9 +91,9 @@ const BingoCard = ({ roomId, bingo }) => {
 
 
   useEffect(() => {
-    const storedSquaresContent = localStorage.getItem("squaresContent");
   
     localStorage.setItem("roomId", roomId);
+    dispatch({ type: 'SET_ROOM_ID', payload: roomId });
     const name = generateRandomName();
  
     console.log(localStorage.getItem("playerName"))
