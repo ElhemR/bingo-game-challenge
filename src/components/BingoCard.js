@@ -239,7 +239,7 @@ const BingoCard = ({ roomId, bingo }) => {
       <div className="squaregrid">
         {squaresContent.map(({ index, card }) => (
           <div
-            className="cell scale-on-hover"
+            className={`cell ${index !== 12 ? "scale-on-hover" : ""}`}
             style={{
               background: "#eee",
               borderRadius: "8px",
@@ -256,6 +256,10 @@ const BingoCard = ({ roomId, bingo }) => {
               whiteSpace: "nowrap",
               wordYrap: "break-word",
               whiteSpace: "normal",
+              ...( index !== 12 && {
+                ":hover": {
+                  transform: "scale(1.5)",
+                }})
             }}
             onClick={() => handleSquareClick(index)}
           >
