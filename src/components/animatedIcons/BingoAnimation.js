@@ -1,5 +1,6 @@
 import { motion, useCycle } from 'framer-motion';
-
+import BingoIcon from './BingoIcon';
+import "./BingoAnimation.css";
 const BingoAnimation = () => {
   const [isAnimating, cycleAnimation] = useCycle(true, true);
 
@@ -15,6 +16,7 @@ const BingoAnimation = () => {
       transition={{ duration: 0.3}}
       onAnimationComplete={handleAnimationComplete}
     >
+
         <h1 className="game-title">
         <motion.span
           initial={{ opacity: 0, y: -20 }}
@@ -57,13 +59,16 @@ const BingoAnimation = () => {
           O
         </motion.span>
         <motion.span
+          style={{ display: "inline" }} 
           initial={{ opacity: 0, y: -20 }}
           animate={isAnimating ? { opacity: 1, y: 0 } : {}}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3, delay: 1 }}
-        >
-          !
+        >!
+        <BingoIcon    conditionMet={true} />
         </motion.span>
+     
+        
       </h1>
     </motion.div>
   );
