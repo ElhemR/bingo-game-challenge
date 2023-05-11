@@ -53,7 +53,36 @@
 .content-text {
     margin-top: -5px;
 }
-@media (max-width: 768px) {
+
+@media (min-width: 768px ) and (max-width:820px) { 
+   /* Adjust the grid for smaller screens */
+   .squaregrid {
+    background-color: #fff;
+    max-width: 450px;
+    display: grid;
+    grid-template: repeat(5, 9w) / repeat(5, 9vw);
+    overflow-y: auto;
+
+}
+.cell {
+    font-size: 0.3em;
+    padding: 2px;
+}
+.content-text{
+  line-height: 1.3em;
+}
+.content-text {
+  margin-top: 0px;
+}
+.grid-container-square {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns with equal width */
+  grid-gap: 5px; /* Adjust the gap between columns as needed */
+
+}
+}
+@media (max-width: 767px) {
     /* Adjust the grid for smaller screens */
     .squaregrid {
         background-color: #fff;
