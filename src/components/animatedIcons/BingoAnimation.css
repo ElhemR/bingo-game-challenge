@@ -4,3 +4,11 @@
     width: 35px !important;
     height: 35px !important;
   }
+
+  @media (max-width: 768px) { 
+    svg {
+      display: inline;
+      width: 15x !important;
+      height: 15px !important;
+    }
+  }

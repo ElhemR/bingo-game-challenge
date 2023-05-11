@@ -231,7 +231,6 @@ const BingoCard = ({ roomId, bingo }) => {
             style={{
               background: "#eee",
               borderRadius: "8px",
-              padding: "8px",
               textAlign: "center",
               background: foundSquares.includes(index) ? "#90EE90" : "#eee",
               cursor: index === 12 ? "default" : "pointer",
