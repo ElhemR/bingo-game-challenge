@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import BingoAnimation from "./animatedIcons/BingoAnimation";
+import { useDispatch, useSelector } from 'react-redux';
 
 const StartPage = () => {
   const [roomId, setRoomId] = useState("");
@@ -9,7 +10,7 @@ const StartPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-
+  const dispatch = useDispatch();
   // Function to generate a random room ID
   const generateRoomId = () => {
     const roomIdLength = 6;
@@ -29,10 +30,9 @@ const StartPage = () => {
   const handleJoinRoom = () => {
     if (roomId) {
       localStorage.setItem("playerName", playerName);
-
+      dispatch({ type: 'SET_PLAYER_NAME', payload: playerName });
       navigate(`/bingo/${roomId}`);
     } else {
-      console.log("en");
       setErrorMessage("You should create a room first!");
     }
   };
