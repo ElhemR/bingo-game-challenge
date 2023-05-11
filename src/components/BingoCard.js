@@ -95,8 +95,10 @@ const BingoCard = ({ roomId, bingo }) => {
   
     localStorage.setItem("roomId", roomId);
     const name = generateRandomName();
-  
+ 
+    console.log(localStorage.getItem("playerName"))
     if (!localStorage.getItem("playerName")) {
+      dispatch({ type: 'SET_PLAYER_NAME', payload: name });
       localStorage.setItem("playerName", name);
     }
   

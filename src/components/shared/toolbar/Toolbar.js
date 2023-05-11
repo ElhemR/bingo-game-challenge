@@ -7,7 +7,7 @@ import UserIcon from '../../../assets/icons/User.svg'
 import { useSelector } from 'react-redux';
 const Toolbar = () => {
 
-    const playerName = localStorage.getItem('playerName');
+    const playerName = useSelector((state) => state.playerName);
     const score = useSelector((state) => state.score);
 
     const roomId = localStorage.getItem('roomId');
