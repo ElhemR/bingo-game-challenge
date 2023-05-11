@@ -38,11 +38,11 @@
   }
   
   .squaregrid {
-    max-width: 630px;
+    max-width: 600px;
     border: '1px solid';
     display: grid;
     margin-left: 5px;
-    grid-template: repeat(5, 10vw) / repeat(5, 10vw);
+    grid-template: repeat(5, 8vw) / repeat(5, 8vw);
     grid-gap: 10px;
 }
 .cell {
@@ -57,13 +57,14 @@
     /* Adjust the grid for smaller screens */
     .squaregrid {
         background-color: #fff;
-        max-width: 500px;
+        max-width: 550px;
         display: grid;
-        grid-template: repeat(5, 15vw) / repeat(5, 15vw);
+        grid-template: repeat(5, 16vw) / repeat(5, 16vw);
         overflow-y: auto;
+    
     }
     .cell {
-        font-size: 0.3em;
+        font-size: 0.2em;
     }
     .content-text{
       line-height: 1.2em;
