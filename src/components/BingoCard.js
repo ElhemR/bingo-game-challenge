@@ -37,7 +37,7 @@ const generateRandomName = () => {
   return playerNames[randomIndex];
 };
 
-const BingoCard = ({ roomId, bingo }) => {
+const BingoCard = ({ roomId }) => {
   const [selectedSquares, setSelectedSquares] = useState(   JSON.parse(localStorage.getItem("squaresContent")) || []);
   const [foundSquares, setFoundSquares] = useState([]);
   const [isWinner, setIsWinner] = useState(false);

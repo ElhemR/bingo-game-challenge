@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import BingoAnimation from "./animatedIcons/BingoAnimation";
 import { useDispatch, useSelector } from 'react-redux';
+import "./StartPage.css"
 
 const StartPage = () => {
   const [roomId, setRoomId] = useState("");

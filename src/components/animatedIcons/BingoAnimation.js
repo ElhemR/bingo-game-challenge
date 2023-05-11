@@ -65,7 +65,7 @@ const BingoAnimation = () => {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3, delay: 1 }}
         >!
-        <BingoIcon    conditionMet={true} />
+      
         </motion.span>
      
         
