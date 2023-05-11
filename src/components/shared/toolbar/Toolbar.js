@@ -1,14 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 import './Toolbar.css';
 import UserIcon from '../../../assets/icons/User.svg'
-import { BingoContext,BingoProvider } from '../../../contexts/BingoContext'
 
+import { useSelector } from 'react-redux';
 const Toolbar = () => {
-    const { score, updateScore } = useContext(BingoContext);
+
     const playerName = localStorage.getItem('playerName');
+    const score = useSelector((state) => state.score);
+
     const roomId = localStorage.getItem('roomId');
+   
     const controls = useAnimation();
     useEffect(() => {
       if (score !== 0) {
@@ -23,7 +26,7 @@ const Toolbar = () => {
     }, [score, controls]);
   
   return (
-    <BingoProvider>
+
     <div className="grid-container">
       <div className="column">
         <div className="tooltip-container">
@@ -57,7 +60,7 @@ const Toolbar = () => {
         </div>
       </div>
     </div>
-    </BingoProvider>
+
   );
 };
 

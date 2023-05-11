@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 // Icons
 import EyeIcon from "./animatedIcons/EyeIcon";
 import EmailIcon from "./animatedIcons/EmailIcon";
@@ -28,17 +28,9 @@ import HeartIcon from "./animatedIcons/HeartIcon";
 import BingoIcon from "./animatedIcons/BingoIcon";
 
 import "./BingoCard.css";
-import io from "socket.io-client";
 
 import playerNames from "../data/randomPlayerNames.json";
 
-// Context
-import { BingoContext } from "../contexts/BingoContext";
-const url =
-  process.env.REACT_APP_BINGO_SERVER_URL;
-console.log(url);
-console.log(process.env);
-const socket = io(url, { transports: ["websocket"] });
 
 const generateRandomName = () => {
   const randomIndex = Math.floor(Math.random() * playerNames.length);
@@ -49,18 +41,79 @@ const BingoCard = ({ roomId, bingo }) => {
   const [selectedSquares, setSelectedSquares] = useState([]);
   const [foundSquares, setFoundSquares] = useState([]);
   const [isWinner, setIsWinner] = useState(false);
-  const [score, setScore] = useState(0);
+  const [squaresContent, setSquaresContent] = useState([]);
+  const dispatch = useDispatch();
+  const fixedCard = { text: "BINGO", component: BingoIcon };
+  const cards = [
+    { text: "Hi, who just joined?", component: EyeIcon },
+    { text: "Can you email that to everyone?", component: EmailIcon },
+    { text: "____, are you there?", component: LoaderIcon },
+    { text: "Uh, _______ you’re still sharing.", component: WarningIcon },
+    {
+      text: "Hey guys, I have to jump to another call.",
+      component: NotificationIcon,
+    },
+    { text: "(sound of someone typing)", component: MessageIcon },
+    { text: "Hi, can you hear me?", component: VolumeUpIcon },
+    { text: "(Loud, painful echo/feedback)", component: UnmuteIcon },
+    { text: "Next slide, please.", component: ArrowRightIcon },
+    {
+      text: "Child or animal noise in the background.",
+      component: TriangleAlertIcon,
+    },
+    { text: "Hello…, Hello?", component: SmileyIcon },
+    { text: "Can everyone go on mute?", component: MicrophoneIcon },
+    { text: "I’m sorry, I was on mute.", component: MutedIcon },
+    { text: "Sorry, go ahead (for over-talkers).", component: RocketIcon },
+    { text: "I’m sorry, you cut out there.", component: LoaderCircleIcon },
+    { text: "Sorry, I did not find the conference Id.", component: UnlinkIcon },
+    { text: "I have a hard stop at ______.", component: ErrorIcon },
+    { text: "Can we take this offline?", component: LayersIcon },
+    { text: "Sorry, I’m late for (insert excuse).", component: ClockIcon },
+    { text: "I’ll have to get back to you.", component: PostBoxIcon },
+    { text: "Sorry, connection issues.", component: ConnectionIcon },
+    { text: "I think there is a lag.", component: SettingIcon },
+    { text: "Can everyone see my screen?", component: DisplayIcon },
+    {
+      text: "Sorry, I didn’t catch that. Can you repeat?",
+      component: HeartIcon,
+    },
+    { text: "Hi, who just joined?", component: EyeIcon },
+  ];
 
-  const [winningCombinations, setWinningCombinations] = useState([]);
-  const { bingoArray, updateBingoArray, updateScore } = useContext(BingoContext);
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+
   useEffect(() => {
+    const storedSquaresContent = localStorage.getItem("squaresContent");
+  
     localStorage.setItem("roomId", roomId);
     const name = generateRandomName();
-
+  
     if (!localStorage.getItem("playerName")) {
-      socket.emit("joinRoom", roomId, name);
       localStorage.setItem("playerName", name);
     }
+  
+    // Shuffle the filtered cards array
+    const shuffledCards = shuffleArray(cards.slice());
+  
+    // Create the array of objects
+    const arrayObjects = shuffledCards.map((card, index) => {
+      return {
+        index: index,
+        card: index === 12 ? fixedCard : card,
+      };
+    });
+  
+    setSquaresContent(arrayObjects);
+
+  
     return () => {};
   }, []);
 
@@ -69,87 +122,11 @@ const BingoCard = ({ roomId, bingo }) => {
     const roomId = localStorage.getItem("roomId");
     const score = foundSquares.length;
     const data = { playerName, score, roomId };
-    socket.emit("scoreUpdate", data);
-    const updatedArray = [...bingoArray]; // Make a copy of the array
-    // Modify the array as needed
-    // Example: Update the value at index [0][0] to 'X'
 
-    updateBingoArray(foundSquares);
-    updateScore(score);
-    return () => {
-      socket.off("scoreUpdate");
-    };
   }, [foundSquares]);
 
-  const squaresData = [
-    { id: 1, text: "Hi, who just joined?", component: EyeIcon },
-    { id: 2, text: "Can you email that to everyone?", component: EmailIcon },
-    { id: 3, text: "____, are you there?", component: LoaderIcon },
-    {
-      id: 4,
-      text: "Uh, _______ you’re still sharing.",
-      component: WarningIcon,
-    },
-    {
-      id: 5,
-      text: "Hey guys, I have to jump to another call.",
-      component: NotificationIcon,
-    },
-    {
-      id: 6,
-      text: "(sound of someone typing)",
-      component: MessageIcon,
-    },
-    { id: 7, text: "Hi, can you hear me?", component: VolumeUpIcon },
-    { id: 8, text: "(Loud, painful echo/feedback)", component: UnmuteIcon },
-    { id: 9, text: "Next slide, please.", component: ArrowRightIcon },
-    {
-      id: 10,
-      text: "Child or animal noise in the background.",
-      component: TriangleAlertIcon,
-    },
-    { id: 11, text: "Hello…, Hello?", component: SmileyIcon },
-    { id: 12, text: "Can everyone go on mute?", component: MicrophoneIcon },
-    { id: 13, text: "BINGO", component: BingoIcon },
-    { id: 14, text: "I’m sorry, I was on mute.", component: MutedIcon },
-    {
-      id: 15,
-      text: "Sorry, go ahead (for over-talkers).",
-      component: RocketIcon,
-    },
-    {
-      id: 16,
-      text: "I’m sorry, you cut out there.",
-      component: LoaderCircleIcon,
-    },
-    {
-      id: 17,
-      text: "Sorry, I did not find the conference Id.",
-      component: UnlinkIcon,
-    },
-    { id: 18, text: "I have a hard stop at ______.", component: ErrorIcon },
-    { id: 19, text: "Can we take this offline?", component: LayersIcon },
-    {
-      id: 20,
-      text: "Sorry, I’m late for (insert excuse).",
-      component: ClockIcon,
-    },
-    { id: 21, text: "I’ll have to get back to you.", component: PostBoxIcon },
-    {
-      id: 22,
-      text: "Sorry, connection issues.",
-      component: ConnectionIcon,
-    },
-    { id: 23, text: "I think there is a lag.", component: SettingIcon },
-    { id: 24, text: "Can everyone see my screen?", component: DisplayIcon },
-    {
-      id: 25,
-      text: "Sorry, I didn’t catch that. Can you repeat?",
-      component: HeartIcon,
-    },
-  ];
-
-  function Square({ index, text, component: Component }) {
+  // squaresData = shuffledSquaresData;
+  function Square({ index, component: Component }) {
     const [showBingo, setShowBingo] = useState(false);
     useEffect(() => {
       let timeout;
@@ -177,7 +154,7 @@ const BingoCard = ({ roomId, bingo }) => {
             <Component conditionMet={isWinner} />
           )}
         </div>
-        <div className="grid-item top-right"> {index - 1}</div>
+        <div className="grid-item top-right"> {index}</div>
       </div>
     );
   }
@@ -187,6 +164,7 @@ const BingoCard = ({ roomId, bingo }) => {
   }, [selectedSquares]);
 
   const handleSquareClick = (index) => {
+    debugger;
     if (index !== 12) {
       if (isWinner) setIsWinner(false);
       if (!selectedSquares.includes(index)) {
@@ -199,36 +177,45 @@ const BingoCard = ({ roomId, bingo }) => {
     }
   };
 
-  socket.on("connect", () => {
-    console.log("Connected to the server");
-  });
-
   const checkWinner = () => {
-    if (bingo.bingo) {
-      console.log("e", bingo.bingo);
-      for (const combo of bingo.bingo) {
-        if (
-          combo.every((columnIndex) => selectedSquares.includes(columnIndex))
-        ) {
-          // Check if the new array already exists in arrayOfArrays
-          const isComboDuplicate = foundSquares.some(
-            (existingArray) =>
-              JSON.stringify(existingArray) === JSON.stringify(combo)
-          );
+    const winningCombinations = [
+      // Rows
+      [0, 1, 2, 3, 4],
+      [5, 6, 7, 8, 9],
+      [10, 11, 12, 13, 14],
+      [15, 16, 17, 18, 19],
+      [20, 21, 22, 23, 24],
+      // Columns
+      [0, 5, 10, 15, 20],
+      [1, 6, 11, 16, 21],
+      [2, 7, 12, 17, 22],
+      [3, 8, 13, 18, 23],
+      [4, 9, 14, 19, 24],
+      // Diagonals
+      [0, 6, 18, 24],
+      [4, 8, 16, 20],
+    ];
 
-          if (!isComboDuplicate) {
-            setIsWinner(true);
-            setSelectedSquares([]);
-            setFoundSquares((prevArrayOfArrays) => [
-              ...prevArrayOfArrays,
-              combo,
-            ]);
-          } else {
-            setSelectedSquares([]);
-          }
-          console.log(foundSquares);
-          // reset
+    for (const combo of winningCombinations) {
+      if (combo.every((columnIndex) => selectedSquares.includes(columnIndex))) {
+        // Check if the new array already exists in arrayOfArrays
+        const isComboDuplicate = foundSquares.some(
+          (existingArray) =>
+            JSON.stringify(existingArray) === JSON.stringify(combo)
+        );
+
+        if (!isComboDuplicate) {
+          setIsWinner(true);
+          localStorage.setItem("score", Number(localStorage.getItem("score"))+1);
+          dispatch({ type: 'INCREMENT_SCORE', payload: 1 });
+          setSelectedSquares([]);
+          setFoundSquares((prevArrayOfArrays) => [...prevArrayOfArrays, combo]);
+      
+        } else {
+          setSelectedSquares([]);
         }
+        console.log(foundSquares);
+        // reset
       }
     }
   };
@@ -236,7 +223,7 @@ const BingoCard = ({ roomId, bingo }) => {
   return (
     <>
       <div className="squaregrid">
-        {Array.from({ length: 25 }, (_, index) => (
+        {squaresContent.map(({ index, card }) => (
           <div
             className="cell scale-on-hover"
             style={{
@@ -259,12 +246,7 @@ const BingoCard = ({ roomId, bingo }) => {
             }}
             onClick={() => handleSquareClick(index)}
           >
-            <Square
-              key={squaresData[index].id}
-              text={squaresData[index].text}
-              component={squaresData[index].component}
-              index={squaresData[index].id}
-            />
+            <Square key={index} component={card.component} index={index} />
             <p
               className="content-text"
               style={{
@@ -275,8 +257,7 @@ const BingoCard = ({ roomId, bingo }) => {
                   : "none",
               }}
             >
-              {" "}
-              {squaresData[index].text}
+              {card.text}
             </p>
           </div>
         ))}
