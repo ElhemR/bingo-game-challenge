@@ -89,7 +89,7 @@ const BingoCard = ({ roomId, bingo }) => {
     },
     {
       id: 6,
-      text: "(sound of someone typing, possibly with a hammer)",
+      text: "(sound of someone typing)",
       component: MessageIcon,
     },
     { id: 7, text: "Hi, can you hear me?", component: VolumeUpIcon },
@@ -129,7 +129,7 @@ const BingoCard = ({ roomId, bingo }) => {
     { id: 21, text: "I’ll have to get back to you.", component: PostBoxIcon },
     {
       id: 22,
-      text: "Sorry, I was having connection issues.",
+      text: "Sorry, connection issues.",
       component: ConnectionIcon,
     },
     { id: 23, text: "I think there is a lag.", component: SettingIcon },
