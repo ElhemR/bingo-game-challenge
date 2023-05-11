@@ -35,7 +35,7 @@ import playerNames from "../data/randomPlayerNames.json";
 // Context
 import { BingoContext } from "../contexts/BingoContext";
 const url =
-  process.env.REACT_APP_BINGO_SERVER_URL + ":" + process.env.REACT_APP_PORT;
+  process.env.REACT_APP_BINGO_SERVER_URL;
 console.log(url);
 console.log(process.env);
 const socket = io(url, { transports: ["websocket"] });

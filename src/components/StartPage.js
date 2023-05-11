@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import BingoAnimation from "./animatedIcons/BingoAnimation";
 
-const url = process.env.REACT_APP_BINGO_SERVER_URL +":"+ process.env.REACT_APP_PORT;
+const url = process.env.REACT_APP_BINGO_SERVER_URL
 console.log('urlÄ',url)
 console.log(process.env)
 const socket = io(url, { transports: ["websocket"] });

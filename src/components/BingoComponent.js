@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 import io from "socket.io-client";
 
-const url = process.env.REACT_APP_BINGO_SERVER_URL +":"+ process.env.REACT_APP_PORT;
+const url = process.env.REACT_APP_BINGO_SERVER_URL
 
 const socket = io(url, { transports: ["websocket"] });
 const BingoComponent = () => {
