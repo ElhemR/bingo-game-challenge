@@ -38,48 +38,40 @@ const generateRandomName = () => {
 };
 
 const BingoCard = ({ roomId, bingo }) => {
-  const [selectedSquares, setSelectedSquares] = useState([]);
+  const [selectedSquares, setSelectedSquares] = useState(   JSON.parse(localStorage.getItem("squaresContent")) || []);
   const [foundSquares, setFoundSquares] = useState([]);
   const [isWinner, setIsWinner] = useState(false);
   const [squaresContent, setSquaresContent] = useState([]);
   const dispatch = useDispatch();
   const fixedCard = { text: "BINGO", component: BingoIcon };
   const cards = [
-    { text: "Hi, who just joined?", component: EyeIcon },
-    { text: "Can you email that to everyone?", component: EmailIcon },
-    { text: "____, are you there?", component: LoaderIcon },
-    { text: "Uh, _______ you’re still sharing.", component: WarningIcon },
-    {
-      text: "Hey guys, I have to jump to another call.",
-      component: NotificationIcon,
-    },
-    { text: "(sound of someone typing)", component: MessageIcon },
-    { text: "Hi, can you hear me?", component: VolumeUpIcon },
-    { text: "(Loud, painful echo/feedback)", component: UnmuteIcon },
-    { text: "Next slide, please.", component: ArrowRightIcon },
-    {
-      text: "Child or animal noise in the background.",
-      component: TriangleAlertIcon,
-    },
-    { text: "Hello…, Hello?", component: SmileyIcon },
-    { text: "Can everyone go on mute?", component: MicrophoneIcon },
-    { text: "I’m sorry, I was on mute.", component: MutedIcon },
-    { text: "Sorry, go ahead (for over-talkers).", component: RocketIcon },
-    { text: "I’m sorry, you cut out there.", component: LoaderCircleIcon },
-    { text: "Sorry, I did not find the conference Id.", component: UnlinkIcon },
-    { text: "I have a hard stop at ______.", component: ErrorIcon },
-    { text: "Can we take this offline?", component: LayersIcon },
-    { text: "Sorry, I’m late for (insert excuse).", component: ClockIcon },
-    { text: "I’ll have to get back to you.", component: PostBoxIcon },
-    { text: "Sorry, connection issues.", component: ConnectionIcon },
-    { text: "I think there is a lag.", component: SettingIcon },
-    { text: "Can everyone see my screen?", component: DisplayIcon },
-    {
-      text: "Sorry, I didn’t catch that. Can you repeat?",
-      component: HeartIcon,
-    },
-    { text: "Hi, who just joined?", component: EyeIcon },
+    { key: "EyeIcon", text: "Hi, who just joined?", component: EyeIcon },
+    { key: "EmailIcon", text: "Can you email that to everyone?", component: EmailIcon },
+    { key: "LoaderIcon", text: "____, are you there?", component: LoaderIcon },
+    { key: "WarningIcon", text: "Uh, _______ you’re still sharing.", component: WarningIcon },
+    { key: "NotificationIcon", text: "Hey guys, I have to jump to another call.", component: NotificationIcon },
+    { key: "MessageIcon", text: "(sound of someone typing)", component: MessageIcon },
+    { key: "VolumeUpIcon", text: "Hi, can you hear me?", component: VolumeUpIcon },
+    { key: "UnmuteIcon", text: "(Loud, painful echo/feedback)", component: UnmuteIcon },
+    { key: "ArrowRightIcon", text: "Next slide, please.", component: ArrowRightIcon },
+    { key: "TriangleAlertIcon", text: "Child or animal noise in the background.", component: TriangleAlertIcon },
+    { key: "SmileyIcon", text: "Hello…, Hello?", component: SmileyIcon },
+    { key: "MicrophoneIcon", text: "Can everyone go on mute?", component: MicrophoneIcon },
+    { key: "MutedIcon", text: "I’m sorry, I was on mute.", component: MutedIcon },
+    { key: "RocketIcon", text: "Sorry, go ahead (for over-talkers).", component: RocketIcon },
+    { key: "LoaderCircleIcon", text: "I’m sorry, you cut out there.", component: LoaderCircleIcon },
+    { key: "UnlinkIcon", text: "Sorry, I did not find the conference Id.", component: UnlinkIcon },
+    { key: "ErrorIcon", text: "I have a hard stop at ______.", component: ErrorIcon },
+    { key: "LayersIcon", text: "Can we take this offline?", component: LayersIcon },
+    { key: "ClockIcon", text: "Sorry, I’m late for (insert excuse).", component: ClockIcon },
+    { key: "PostBoxIcon", text: "I’ll have to get back to you.", component: PostBoxIcon },
+    { key: "ConnectionIcon", text: "Sorry, connection issues.", component: ConnectionIcon },
+    { key: "SettingIcon", text: "I think there is a lag.", component: SettingIcon },
+    { key: "DisplayIcon", text: "Can everyone see my screen?", component: DisplayIcon },
+    { key: "HeartIcon", text: "Sorry, I didn’t catch that. Can you repeat?", component: HeartIcon },
+    { key: "EyeIcon", text: "Hi, who just joined?", component: EyeIcon },
   ];
+  
 
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -90,18 +82,22 @@ const BingoCard = ({ roomId, bingo }) => {
   }
 
 
+
+  
+
   useEffect(() => {
   
     localStorage.setItem("roomId", roomId);
     dispatch({ type: 'SET_ROOM_ID', payload: roomId });
     const name = generateRandomName();
  
-    console.log(localStorage.getItem("playerName"))
+
     if (!localStorage.getItem("playerName")) {
       dispatch({ type: 'SET_PLAYER_NAME', payload: name });
       localStorage.setItem("playerName", name);
     }
   
+    if(!localStorage.getItem("squaresContent")) {
     // Shuffle the filtered cards array
     const shuffledCards = shuffleArray(cards.slice());
   
@@ -114,6 +110,13 @@ const BingoCard = ({ roomId, bingo }) => {
     });
   
     setSquaresContent(arrayObjects);
+    localStorage.setItem("squaresContent",JSON.stringify(arrayObjects))
+    }
+    else {
+
+      setSquaresContent(JSON.parse(localStorage.getItem("squaresContent")));
+    }
+ 
 
   
     return () => {};
@@ -128,7 +131,16 @@ const BingoCard = ({ roomId, bingo }) => {
   }, [foundSquares]);
 
   // squaresData = shuffledSquaresData;
-  function Square({ index, component: Component }) {
+  function Square({ index, keyComponent, card, component: Component }) {
+
+    const iconKey= card.key;
+
+    const foundCard = cards.find(card => card.key === iconKey);
+  
+    // If the component is found, render it
+    const FoundComponent = foundCard ? foundCard.component : null; 
+
+
     const [showBingo, setShowBingo] = useState(false);
     useEffect(() => {
       let timeout;
@@ -150,11 +162,11 @@ const BingoCard = ({ roomId, bingo }) => {
     return (
       <div className="grid-container-square">
         <div className="grid-item top-left">
-          {showBingo ? (
-            <BingoIcon conditionMet={isWinner} />
-          ) : (
-            <Component conditionMet={isWinner} />
-          )}
+        {showBingo ? (
+  <BingoIcon conditionMet={isWinner} />
+) : (
+  FoundComponent && <FoundComponent conditionMet={isWinner} />
+)}
         </div>
         <div className="grid-item top-right"> {index}</div>
       </div>
@@ -216,8 +228,8 @@ const BingoCard = ({ roomId, bingo }) => {
         } else {
           setSelectedSquares([]);
         }
-        console.log(foundSquares);
-        // reset
+
+
       }
     }
   };
@@ -247,7 +259,7 @@ const BingoCard = ({ roomId, bingo }) => {
             }}
             onClick={() => handleSquareClick(index)}
           >
-            <Square key={index} component={card.component} index={index} />
+            <Square key={index} component={card.component} index={index} keyIcon={card.key} card={card}/>
             <p
               className="content-text"
               style={{

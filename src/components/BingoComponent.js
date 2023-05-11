@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 
 const BingoComponent = () => {
   let { roomId } = useParams();
-  // Listen for 'roomInfo' event
 
   return (
     <div>
