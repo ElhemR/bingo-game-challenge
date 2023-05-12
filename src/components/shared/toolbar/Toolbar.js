@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
+import React, { useEffect } from "react";
 
-import "./Toolbar.css";
 import UserIcon from "../../../assets/icons/User.svg";
+import "./Toolbar.css";
 
 import { useSelector } from "react-redux";
 const Toolbar = () => {

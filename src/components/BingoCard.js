@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import "./BingoCard.css";
 
 import playerNames from "../data/randomPlayerNames.json";
 
-import { cards } from "../data/cards";
-import { fixedCard } from "../data/cards";
+import { cards, fixedCard } from "../data/cards";
+import BingoIcon from "./animatedIcons/BingoIcon";
 
 const generateRandomName = () => {
   const randomIndex = Math.floor(Math.random() * playerNames.length);
